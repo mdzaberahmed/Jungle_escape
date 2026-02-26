@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+              import 'package:flutter/material.dart';
 import 'dart:async';
 
 void main() {
@@ -35,18 +35,35 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int score = 0;
   int highScore = 0;
-  int timeLeft = 10; // 10 seconds to escape
+  int timeLeft = 15;
   bool isPlaying = false;
-  Timer? timer;
+
+  double tigerProgress = 0.0;
+  int difficultyLevel = 1;
+
+  Timer? gameTimer;
+  Timer? tigerTimer;
 
   void startGame() {
+    gameTimer?.cancel();
+    tigerTimer?.cancel();
+
     setState(() {
       score = 0;
-      timeLeft = 10;
+      timeLeft = 15;
+      tigerProgress = 0.0;
+      difficultyLevel = 1;
       isPlaying = true;
     });
 
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    startTimers();
+  }
+
+  void startTimers() {
+    // Game countdown timer
+    gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+
       setState(() {
         if (timeLeft > 0) {
           timeLeft--;
@@ -55,48 +72,85 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     });
+
+    // Tiger progress timer (speeds up based on difficulty)
+    tigerTimer = Timer.periodic(
+      Duration(milliseconds: 800 - (difficultyLevel * 50)), 
+      (timer) {
+        if (!mounted || !isPlaying) return;
+
+        setState(() {
+          tigerProgress += 0.04 + (difficultyLevel * 0.01);
+
+          if (tigerProgress >= 1) {
+            tigerProgress = 1.0;
+            endGame();
+          }
+        });
+      },
+    );
   }
 
   void runAction() {
-    if (isPlaying) {
-      setState(() {
-        score++;
-      });
-    }
+    if (!isPlaying) return;
+
+    setState(() {
+      score++;
+      tigerProgress -= 0.05;
+      if (tigerProgress < 0) tigerProgress = 0;
+
+      // Increase difficulty every 5 points
+      if (score % 5 == 0) {
+        difficultyLevel++;
+        tigerTimer?.cancel();
+        startTimers(); // Restart timers with new difficulty speed
+      }
+    });
   }
 
   void endGame() {
-    timer?.cancel();
+    gameTimer?.cancel();
+    tigerTimer?.cancel();
+
+    if (!mounted) return;
+
     setState(() {
       isPlaying = false;
       if (score > highScore) {
         highScore = score;
       }
     });
-    
-    // Game Over Alert Dialog
+
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => AlertDialog(
+      builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: const Center(child: Text("🛑 Game Over!")),
+        title: const Center(
+          child: Text("🐯 CAUGHT!", style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 24)),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text("The tiger almost caught you!", textAlign: TextAlign.center),
+            Text(timeLeft == 0 ? "Time's up!" : "The tiger caught you!", style: const TextStyle(fontSize: 16)),
             const SizedBox(height: 15),
-            Text("Steps Taken: $score", style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Text("Final Score: $score", style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 10),
+            Text("Level Reached: $difficultyLevel", style: const TextStyle(color: Colors.greenAccent, fontSize: 16)),
           ],
         ),
         actions: [
           Center(
             child: ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.greenAccent,
+                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              ),
               onPressed: () {
                 Navigator.pop(context);
+                startGame();
               },
-              child: const Text("Try Again", style: TextStyle(color: Colors.black)),
+              child: const Text("Play Again", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 18)),
             ),
           )
         ],
@@ -105,17 +159,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void resetGame() {
-    timer?.cancel();
+    gameTimer?.cancel();
+    tigerTimer?.cancel();
+
     setState(() {
       score = 0;
-      timeLeft = 10;
+      timeLeft = 15;
+      tigerProgress = 0.0;
+      difficultyLevel = 1;
       isPlaying = false;
     });
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    gameTimer?.cancel();
+    tigerTimer?.cancel();
     super.dispose();
   }
 
@@ -136,40 +195,55 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Top Bar: High Score & Timer
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black45,
-                        borderRadius: BorderRadius.circular(15),
+                // TOP SECTION: Stats & Tiger Bar
+                Container(
+                  padding: const EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    color: Colors.black45,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("🏆 High Score: $highScore", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                          Text(
+                            "⏳ Time: $timeLeft s", 
+                            style: TextStyle(
+                              fontSize: 16, 
+                              fontWeight: FontWeight.bold, 
+                              color: timeLeft <= 5 ? Colors.redAccent : Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
-                      child: Text(
-                        "🏆 High Score: $highScore",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      const SizedBox(height: 15),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("🐯 Tiger Distance", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.redAccent)),
+                          const SizedBox(height: 8),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: LinearProgressIndicator(
+                              value: tigerProgress,
+                              minHeight: 15,
+                              backgroundColor: Colors.white24,
+                              color: Colors.redAccent,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: timeLeft <= 3 ? Colors.red.withOpacity(0.8) : Colors.black45,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Text(
-                        "⏳ Time: $timeLeft s",
-                        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
 
-                // Center: Current Score
+                // CENTER SECTION: Score & Level
                 Column(
                   children: [
                     const Text(
@@ -181,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.greenAccent,
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     Text(
                       "$score",
                       style: const TextStyle(
@@ -193,21 +267,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    const Text(
-                      "Steps",
-                      style: TextStyle(fontSize: 20, color: Colors.white70),
+                    const SizedBox(height: 10),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.greenAccent.withAlpha(50),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text("Level: $difficultyLevel", style: const TextStyle(fontSize: 18, color: Colors.greenAccent, fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),
 
-                // Bottom: Action Buttons
+                // BOTTOM SECTION: Controls
                 Column(
                   children: [
                     if (!isPlaying)
                       ElevatedButton.icon(
                         onPressed: startGame,
                         icon: const Icon(Icons.play_arrow, size: 30, color: Colors.black),
-                        label: const Text("START ESCAPE", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
+                        label: const Text("START GAME", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.greenAccent,
                           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
@@ -215,9 +294,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       )
                     else
-                      InkWell(
+                      GestureDetector(
                         onTap: runAction,
-                        borderRadius: BorderRadius.circular(50),
                         child: Container(
                           height: 100,
                           width: 200,
@@ -227,15 +305,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(50),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.orange.withOpacity(0.5),
+                                color: Colors.orange.withAlpha(128), // withOpacity এর পরিবর্তে withAlpha ব্যবহার করা হয়েছে
                                 spreadRadius: 5,
                                 blurRadius: 15,
                               )
                             ],
                           ),
                           child: const Text(
-                            "RUN! 🏃‍♂️",
-                            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.black),
+                            "RUN! 🏃",
+                            style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: Colors.black),
                           ),
                         ),
                       ),
@@ -244,9 +322,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       onPressed: resetGame,
                       icon: const Icon(Icons.refresh, color: Colors.redAccent),
                       label: const Text("Reset Game", style: TextStyle(color: Colors.redAccent, fontSize: 16)),
-                    ),
+                    )
                   ],
-                ),
+                )
               ],
             ),
           ),
