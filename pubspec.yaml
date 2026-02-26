@@ -1,19 +1,29 @@
 name: jungle_escape
-description: A 3D Jungle Survival RPG.
+description: A 3D Battle Lobby Game UI
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  model_viewer_plus: ^1.7.0 # ৩ডি মডেল ভিউয়ার প্যাকেজ 📦
+
+  cupertino_icons: ^1.0.6
+  model_viewer_plus: ^1.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true
+
   assets:
-    - assets/models/archer.glb # ৩ডি মডেল ফাইল 🏹
-    - assets/images/player_avatar.png # প্লেয়ার অবতার ইমেজ 👤
-    
+    - assets/models/archer_boy.glb
+    - assets/models/archer_girl.glb
+    - assets/images/player_avatar.png
