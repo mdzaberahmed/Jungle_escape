@@ -9,7 +9,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // লেয়ার ১: ব্যাকগ্রাউন্ড
+          // লেয়ার ১: ব্যাকগ্রাউন্ড 🖼️
           Container(
             color: Colors.green.shade900,
             width: double.infinity,
@@ -22,17 +22,17 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
 
-          // লেয়ার ২: ক্যারেক্টার (আপাতত আইকন)
+          // লেয়ার ২: ক্যারেক্টার 🥷 (আপডেটেড আইকন)
           const Align(
             alignment: Alignment.center,
             child: Icon(
-              Icons.person_standing,
+              Icons.person, // <-- আইকনটা এখানে আপডেট করা হয়েছে
               size: 150,
               color: Colors.white,
             ),
           ),
 
-          // লেয়ার ৩: START বাটন
+          // লেয়ার ৩: START বাটন ▶️
           Positioned(
             bottom: 30,
             right: 30,
@@ -63,4 +63,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
