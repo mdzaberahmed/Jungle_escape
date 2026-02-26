@@ -1,69 +1,88 @@
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart'; // ৩ডি মডেল প্যাকেজ
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Stack(
         children: [
 
-          /// 🌴 Background - জঙ্গলের থিম 
+          /// 🌴 Background
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFF0f2027), Color(0xFF203a43), Color(0xFF2c5364)],
+                  colors: [
+                    Color(0xFF0f2027),
+                    Color(0xFF203a43),
+                    Color(0xFF2c5364)
+                  ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                 ),
               ),
-              // যদি ইমেজ থাকে তবে এটি ব্যবহার করো:
-              // child: Image.asset("assets/bg.jpg", fit: BoxFit.cover),
             ),
           ),
 
-          /// 🔹 Main UI Layout
           Column(
             children: [
 
-              /// 🔝 TOP BAR (প্লেয়ার ইনফো এবং কারেন্সি) 💰
+              /// 🔝 TOP BAR
               Container(
                 height: 70,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withOpacity(0.5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Row(
-                      children: [
-                        CircleAvatar(child: Icon(Icons.person)),
+                    Row(
+                      children: const [
+                        CircleAvatar(
+                          radius: 22,
+                          backgroundImage:
+                              AssetImage("assets/images/player_avatar.png"),
+                        ),
                         SizedBox(width: 10),
-                        Text("SK ROKI", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                        Text(
+                          "SK ROKI",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
                       ],
                     ),
                     Row(
                       children: const [
-                        CurrencyIcon(icon: Icons.monetization_on, color: Colors.yellow, value: "5000"),
+                        CurrencyIcon(
+                            icon: Icons.monetization_on,
+                            color: Colors.yellow,
+                            value: "5000"),
                         SizedBox(width: 15),
-                        CurrencyIcon(icon: Icons.diamond, color: Colors.blue, value: "10"),
+                        CurrencyIcon(
+                            icon: Icons.diamond,
+                            color: Colors.blue,
+                            value: "10"),
                       ],
                     )
                   ],
                 ),
               ),
 
-              /// 🔽 BODY (মেনু এবং ক্যারেক্টার)
+              /// 🔽 BODY
               Expanded(
                 child: Row(
                   children: [
 
-                    /// ⬅️ LEFT MENU (স্টোর, মিশন ইত্যাদি) 🎒
+                    /// ⬅️ LEFT MENU
                     Container(
-                      width: 150,
-                      padding: const EdgeInsets.only(left: 10),
+                      width: 160,
+                      padding: const EdgeInsets.only(left: 15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,35 +95,64 @@ class GameScreen extends StatelessWidget {
                       ),
                     ),
 
-                    /// 👤 CHARACTER AREA (মাঝখানে ৩ডি মডেল) 🏹
+                    /// 👤 CHARACTER AREA
                     Expanded(
                       child: Center(
-                        child: SizedBox(
-                          height: 500, // মডেলের উচ্চতা
-                          child: ModelViewer(
-                            key: const ValueKey('player_model'), // মডেল রিলোড করার জন্য কী
-                            src: 'assets/models/archer.glb', // ৩ডি মডেলের রাস্তা (GLB ফাইল)
-                            alt: "Fantasy Archer Character",
-                            autoRotate: true, // মডেলটি নিজে থেকেই ঘুরবে
-                            autoRotateDelay: 0,
-                            cameraControls: true, // প্লেয়ার মডেলটি ঘোরাতে পারবে
-                            disableZoom: true, // জুম বন্ধ রাখা হয়েছে লবির জন্য
-                            backgroundColor: Colors.transparent,
-                          ),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+
+                            /// 🔥 Glow Effect
+                            Container(
+                              height: screenHeight * 0.45,
+                              width: screenHeight * 0.45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.orange.withOpacity(0.6),
+                                    blurRadius: 60,
+                                    spreadRadius: 20,
+                                  )
+                                ],
+                              ),
+                            ),
+
+                            /// 🏹 3D Model
+                            SizedBox(
+                              height: screenHeight * 0.6,
+                              child: ModelViewer(
+                                key: const ValueKey('player_model'),
+                                src: 'assets/models/archer.glb',
+                                alt: "Fantasy Archer Girl",
+                                autoRotate: true,
+                                autoRotateDelay: 0,
+                                cameraControls: true,
+                                disableZoom: true,
+                                backgroundColor: Colors.transparent,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
 
-                    /// ➡️ RIGHT PANEL (সেটিংস, ফ্রেন্ডস) ⚙️
+                    /// ➡️ RIGHT PANEL
                     Container(
-                      width: 60,
+                      width: 70,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: const [
                           SizedBox(height: 20),
-                          IconButton(onPressed: null, icon: Icon(Icons.settings, color: Colors.white)),
-                          IconButton(onPressed: null, icon: Icon(Icons.group, color: Colors.white)),
-                          IconButton(onPressed: null, icon: Icon(Icons.mail, color: Colors.white)),
+                          IconButton(
+                              onPressed: null,
+                              icon:
+                                  Icon(Icons.settings, color: Colors.white)),
+                          IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.group, color: Colors.white)),
+                          IconButton(
+                              onPressed: null,
+                              icon: Icon(Icons.mail, color: Colors.white)),
                         ],
                       ),
                     ),
@@ -112,13 +160,16 @@ class GameScreen extends StatelessWidget {
                 ),
               ),
 
-              /// 🔽 BOTTOM BAR (স্টার্ট বাটন এবং ম্যাপ সিলেক্ট) 🗺️
+              /// 🔽 BOTTOM BAR
               Container(
                 height: 100,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.transparent, Colors.black.withOpacity(0.8)],
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.9)
+                    ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
@@ -127,26 +178,53 @@ class GameScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Icon(Icons.chat, color: Colors.white),
-                    
-                    /// 🔥 START BUTTON AREA
+
                     Row(
                       children: [
                         const MapSelector(),
-                        const SizedBox(width: 20),
-                        GestureDetector(
-                          onTap: () {
-                            // গেম শুরু করার লজিক এখানে
+                        const SizedBox(width: 25),
+
+                        /// 🔥 Animated START Button
+                        TweenAnimationBuilder(
+                          tween: Tween<double>(begin: 0.95, end: 1),
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.easeInOut,
+                          builder: (context, double scale, child) {
+                            return Transform.scale(
+                              scale: scale,
+                              child: child,
+                            );
                           },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Colors.orange.shade700,
-                              borderRadius: BorderRadius.circular(5),
-                              boxShadow: [BoxShadow(color: Colors.orange.withOpacity(0.5), blurRadius: 10)],
-                            ),
-                            child: const Text(
-                              "START",
-                              style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.black),
+                          child: GestureDetector(
+                            onTap: () {
+                              // Start Game Logic
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 70, vertical: 18),
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.orange.shade600,
+                                    Colors.red.shade600
+                                  ],
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color:
+                                          Colors.orange.withOpacity(0.6),
+                                      blurRadius: 15)
+                                ],
+                              ),
+                              child: const Text(
+                                "START",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -154,72 +232,9 @@ class GameScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                ),
+              ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-}
-
-// কাস্টম উইজেটগুলো নিচে দেওয়া হলো (আগের মতোই আছে):
-
-class MenuButton extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  const MenuButton({super.key, required this.title, required this.icon});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.white, size: 20),
-          const SizedBox(width: 10),
-          Text(title, style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
-  }
-}
-
-class CurrencyIcon extends StatelessWidget {
-  final IconData icon;
-  final Color color;
-  final String value;
-  const CurrencyIcon({super.key, required this.icon, required this.color, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(color: Colors.black38, borderRadius: BorderRadius.circular(20)),
-      child: Row(
-        children: [
-          Icon(icon, color: color, size: 18),
-          const SizedBox(width: 5),
-          Text(value, style: const TextStyle(color: Colors.white, fontSize: 14)),
-        ],
-      ),
-    );
-  }
-}
-
-class MapSelector extends StatelessWidget {
-  const MapSelector({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      color: Colors.black54,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: const [
-          Text("Jungle Map", style: TextStyle(color: Colors.amber, fontSize: 12)),
-          Text("RANKED", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
         ],
       ),
     );
