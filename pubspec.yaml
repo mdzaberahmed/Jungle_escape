@@ -1,5 +1,5 @@
 name: jungle_escape
-description: A new Flutter project.
+description: A 3D Jungle Survival RPG.
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,14 +9,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  model_viewer_plus: ^1.7.0 # 3D মডেল দেখানোর প্যাকেজ
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^2.0.0
+  model_viewer_plus: ^1.7.0 # ৩ডি মডেল ভিউয়ার প্যাকেজ 📦
 
 flutter:
   uses-material-design: true
   assets:
-    - assets/models/ # 3D মডেলের ফোল্ডার
+    - assets/models/archer.glb # ৩ডি মডেল ফাইল 🏹
+    - assets/images/player_avatar.png # প্লেয়ার অবতার ইমেজ 👤
+    
