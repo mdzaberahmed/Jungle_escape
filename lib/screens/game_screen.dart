@@ -1,8 +1,15 @@
-                              import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
-class GameScreen extends StatelessWidget {
+class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  bool isBoy = true;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +19,7 @@ class GameScreen extends StatelessWidget {
       body: Stack(
         children: [
 
-          /// 🌴 Background
+          /// Background Gradient
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
@@ -20,7 +27,7 @@ class GameScreen extends StatelessWidget {
                   colors: [
                     Color(0xFF0f2027),
                     Color(0xFF203a43),
-                    Color(0xFF2c5364)
+                    Color(0xFF2c5364),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -32,7 +39,7 @@ class GameScreen extends StatelessWidget {
           Column(
             children: [
 
-              /// 🔝 TOP BAR
+              /// ================= TOP BAR =================
               Container(
                 height: 70,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -60,14 +67,14 @@ class GameScreen extends StatelessWidget {
                       ],
                     ),
 
-                    /// Currency (❌ const removed)
+                    /// Currency
                     Row(
-                      children: [
+                      children: const [
                         CurrencyIcon(
                             icon: Icons.monetization_on,
                             color: Colors.yellow,
                             value: "5000"),
-                        const SizedBox(width: 15),
+                        SizedBox(width: 15),
                         CurrencyIcon(
                             icon: Icons.diamond,
                             color: Colors.blue,
@@ -78,19 +85,19 @@ class GameScreen extends StatelessWidget {
                 ),
               ),
 
-              /// 🔽 BODY
+              /// ================= BODY =================
               Expanded(
                 child: Row(
                   children: [
 
-                    /// ⬅️ LEFT MENU (❌ const removed)
+                    /// LEFT MENU
                     Container(
                       width: 160,
                       padding: const EdgeInsets.only(left: 15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                        children: const [
                           MenuButton(title: "STORE", icon: Icons.store),
                           MenuButton(title: "MISSIONS", icon: Icons.assignment),
                           MenuButton(title: "EVENTS", icon: Icons.event),
@@ -99,14 +106,14 @@ class GameScreen extends StatelessWidget {
                       ),
                     ),
 
-                    /// 👤 CHARACTER AREA
+                    /// CHARACTER AREA
                     Expanded(
                       child: Center(
                         child: Stack(
                           alignment: Alignment.center,
                           children: [
 
-                            /// Glow
+                            /// Glow Effect
                             Container(
                               height: screenHeight * 0.45,
                               width: screenHeight * 0.45,
@@ -124,11 +131,13 @@ class GameScreen extends StatelessWidget {
 
                             /// 3D Model
                             SizedBox(
-                              height: screenHeight * 0.6,
+                              height: screenHeight * 0.65,
                               child: ModelViewer(
-                                key: const ValueKey('player_model'),
-                                src: 'assets/models/archer.glb',
-                                alt: "Fantasy Archer Boy",
+                                key: ValueKey(isBoy),
+                                src: isBoy
+                                    ? 'assets/models/archer_boy.glb'
+                                    : 'assets/models/archer_girl.glb',
+                                alt: "Fantasy Archer",
                                 autoRotate: true,
                                 autoRotateDelay: 0,
                                 cameraControls: true,
@@ -141,17 +150,30 @@ class GameScreen extends StatelessWidget {
                       ),
                     ),
 
-                    /// ➡️ RIGHT PANEL
+                    /// RIGHT PANEL
                     Container(
-                      width: 70,
+                      width: 80,
                       child: Column(
-                        children: const [
-                          SizedBox(height: 20),
-                          Icon(Icons.settings, color: Colors.white),
-                          SizedBox(height: 10),
-                          Icon(Icons.group, color: Colors.white),
-                          SizedBox(height: 10),
-                          Icon(Icons.mail, color: Colors.white),
+                        children: [
+
+                          const SizedBox(height: 20),
+
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isBoy = !isBoy;
+                              });
+                            },
+                            icon: const Icon(Icons.swap_horiz,
+                                color: Colors.white),
+                          ),
+
+                          const SizedBox(height: 10),
+                          const Icon(Icons.settings, color: Colors.white),
+                          const SizedBox(height: 10),
+                          const Icon(Icons.group, color: Colors.white),
+                          const SizedBox(height: 10),
+                          const Icon(Icons.mail, color: Colors.white),
                         ],
                       ),
                     ),
@@ -159,7 +181,7 @@ class GameScreen extends StatelessWidget {
                 ),
               ),
 
-              /// 🔽 BOTTOM BAR
+              /// ================= BOTTOM BAR =================
               Container(
                 height: 100,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -176,14 +198,15 @@ class GameScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+
                     const Icon(Icons.chat, color: Colors.white),
 
                     Row(
                       children: [
-                        MapSelector(), // ❌ const removed
+
+                        const MapSelector(),
                         const SizedBox(width: 25),
 
-                        /// START BUTTON
                         GestureDetector(
                           onTap: () {},
                           child: Container(
@@ -197,6 +220,13 @@ class GameScreen extends StatelessWidget {
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color:
+                                      Colors.orange.withOpacity(0.6),
+                                  blurRadius: 15,
+                                )
+                              ],
                             ),
                             child: const Text(
                               "START",
@@ -216,6 +246,89 @@ class GameScreen extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// ================= CUSTOM WIDGETS =================
+
+class CurrencyIcon extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String value;
+
+  const CurrencyIcon({
+    super.key,
+    required this.icon,
+    required this.color,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(width: 5),
+        Text(
+          value,
+          style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold),
+        ),
+      ],
+    );
+  }
+}
+
+class MenuButton extends StatelessWidget {
+  final String title;
+  final IconData icon;
+
+  const MenuButton({
+    super.key,
+    required this.title,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white),
+          const SizedBox(width: 10),
+          Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MapSelector extends StatelessWidget {
+  const MapSelector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding:
+          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      decoration: BoxDecoration(
+        color: Colors.black.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: const Text(
+        "Bermuda",
+        style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold),
       ),
     );
   }
