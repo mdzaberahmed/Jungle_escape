@@ -1,30 +1,33 @@
-Flutter Build
+name: Flutter Build & Release
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # ফ্লাটার এসডিকে সেটআপ করা হচ্ছে
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: '3.x' # সর্বশেষ স্ট্যাবল ভার্সন ব্যবহার করবে
 
-    # ডিপেনডেন্সি ইন্সটল করা হচ্ছে
-    - name: Install dependencies
-      run: flutter pub get
+      - name: Install dependencies
+        run: flutter pub get
 
-    # কোড অ্যানালাইজ করা হচ্ছে
-    - name: Analyze project source
-      run: flutter analyze
+      - name: Build APK
+        run: flutter build apk --release
 
-      
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: jungle-escape-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          
