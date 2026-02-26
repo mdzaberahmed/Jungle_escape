@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+                              import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 class GameScreen extends StatelessWidget {
@@ -40,6 +40,8 @@ class GameScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+
+                    /// Player Info
                     Row(
                       children: const [
                         CircleAvatar(
@@ -57,13 +59,15 @@ class GameScreen extends StatelessWidget {
                         ),
                       ],
                     ),
+
+                    /// Currency (❌ const removed)
                     Row(
-                      children: const [
+                      children: [
                         CurrencyIcon(
                             icon: Icons.monetization_on,
                             color: Colors.yellow,
                             value: "5000"),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         CurrencyIcon(
                             icon: Icons.diamond,
                             color: Colors.blue,
@@ -79,14 +83,14 @@ class GameScreen extends StatelessWidget {
                 child: Row(
                   children: [
 
-                    /// ⬅️ LEFT MENU
+                    /// ⬅️ LEFT MENU (❌ const removed)
                     Container(
                       width: 160,
                       padding: const EdgeInsets.only(left: 15),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
+                        children: [
                           MenuButton(title: "STORE", icon: Icons.store),
                           MenuButton(title: "MISSIONS", icon: Icons.assignment),
                           MenuButton(title: "EVENTS", icon: Icons.event),
@@ -102,7 +106,7 @@ class GameScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           children: [
 
-                            /// 🔥 Glow Effect
+                            /// Glow
                             Container(
                               height: screenHeight * 0.45,
                               width: screenHeight * 0.45,
@@ -118,13 +122,13 @@ class GameScreen extends StatelessWidget {
                               ),
                             ),
 
-                            /// 🏹 3D Model
+                            /// 3D Model
                             SizedBox(
                               height: screenHeight * 0.6,
                               child: ModelViewer(
                                 key: const ValueKey('player_model'),
                                 src: 'assets/models/archer.glb',
-                                alt: "Fantasy Archer Girl",
+                                alt: "Fantasy Archer Boy",
                                 autoRotate: true,
                                 autoRotateDelay: 0,
                                 cameraControls: true,
@@ -143,16 +147,11 @@ class GameScreen extends StatelessWidget {
                       child: Column(
                         children: const [
                           SizedBox(height: 20),
-                          IconButton(
-                              onPressed: null,
-                              icon:
-                                  Icon(Icons.settings, color: Colors.white)),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.group, color: Colors.white)),
-                          IconButton(
-                              onPressed: null,
-                              icon: Icon(Icons.mail, color: Colors.white)),
+                          Icon(Icons.settings, color: Colors.white),
+                          SizedBox(height: 10),
+                          Icon(Icons.group, color: Colors.white),
+                          SizedBox(height: 10),
+                          Icon(Icons.mail, color: Colors.white),
                         ],
                       ),
                     ),
@@ -181,49 +180,30 @@ class GameScreen extends StatelessWidget {
 
                     Row(
                       children: [
-                        const MapSelector(),
+                        MapSelector(), // ❌ const removed
                         const SizedBox(width: 25),
 
-                        /// 🔥 Animated START Button
-                        TweenAnimationBuilder(
-                          tween: Tween<double>(begin: 0.95, end: 1),
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeInOut,
-                          builder: (context, double scale, child) {
-                            return Transform.scale(
-                              scale: scale,
-                              child: child,
-                            );
-                          },
-                          child: GestureDetector(
-                            onTap: () {
-                              // Start Game Logic
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 70, vertical: 18),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Colors.orange.shade600,
-                                    Colors.red.shade600
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color:
-                                          Colors.orange.withOpacity(0.6),
-                                      blurRadius: 15)
+                        /// START BUTTON
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 70, vertical: 18),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.orange.shade600,
+                                  Colors.red.shade600
                                 ],
                               ),
-                              child: const Text(
-                                "START",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 26,
-                                  fontWeight: FontWeight.w900,
-                                ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Text(
+                              "START",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w900,
                               ),
                             ),
                           ),
