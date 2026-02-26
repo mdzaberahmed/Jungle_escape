@@ -1,4 +1,4 @@
-name: Flutter Build
+Flutter Build
 
 on:
   push:
@@ -26,4 +26,5 @@ jobs:
     # কোড অ্যানালাইজ করা হচ্ছে
     - name: Analyze project source
       run: flutter analyze
+
       
