@@ -12,9 +12,7 @@ class Skill {
   });
 
   void upgrade() {
-    if (level < maxLevel) {
-      level++;
-    }
+    if (level < maxLevel) level++;
   }
 
   int getUpgradeCost() {
@@ -24,4 +22,4 @@ class Skill {
   bool isMaxLevel() {
     return level >= maxLevel;
   }
-} 
+}
