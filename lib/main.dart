@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-import 'screens/game_screen.dart';
+import 'screens/home_screen.dart'; // HomeScreen ইমপোর্ট করা হলো
 
 void main() {
-  runApp(const JungleApp());
+  runApp(const JungleEscapeApp());
 }
 
-class JungleApp extends StatelessWidget {
-  const JungleApp({super.key});
+class JungleEscapeApp extends StatelessWidget {
+  const JungleEscapeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      title: 'Jungle Escape',
+      theme: ThemeData(
+        primarySwatch: Colors.green, // জঙ্গলের থিম
+      ),
       debugShowCheckedModeBanner: false,
-      home: GameScreen(),
+      home: const HomeScreen(), // গেম চালু হলেই প্রথমে লবি বা HomeScreen দেখাবে
     );
   }
 }
