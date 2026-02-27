@@ -10,10 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
   flame: ^1.17.0
   audioplayers: ^5.2.1
+  model_viewer_plus: ^1.7.0 # 👈 নতুন ৩ডি মডেল প্যাকেজ
 
 dev_dependencies:
   flutter_test:
@@ -21,7 +21,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
   assets:
     - assets/images/
     - assets/sounds/
+    - assets/models/archer.glb # 👈 ৩ডি মডেলের ফাইল
+    
