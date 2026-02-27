@@ -79,26 +79,23 @@ class _LobbyScreenState extends State<LobbyScreen>
                     children: const [
                       CircleAvatar(radius: 25, child: Icon(Icons.person)),
                       SizedBox(width: 10),
-                      Text("SK ROKI",
+                      Text("SK_ROKI", // 👈 তোমার নতুন টেক্সট স্টাইল
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 22,
-                              fontWeight: FontWeight.bold)),
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.2)),
                     ],
                   ),
                   Row(
                     children: const [
-                      Icon(Icons.monetization_on,
-                          color: Colors.amber),
+                      Icon(Icons.monetization_on, color: Colors.amber),
                       SizedBox(width: 5),
-                      Text("5000",
-                          style: TextStyle(color: Colors.white)),
+                      Text("5000", style: TextStyle(color: Colors.white)),
                       SizedBox(width: 20),
-                      Icon(Icons.diamond,
-                          color: Colors.blueAccent),
+                      Icon(Icons.diamond, color: Colors.blueAccent),
                       SizedBox(width: 5),
-                      Text("10",
-                          style: TextStyle(color: Colors.white)),
+                      Text("10", style: TextStyle(color: Colors.white)),
                     ],
                   )
                 ],
@@ -150,23 +147,26 @@ class _LobbyScreenState extends State<LobbyScreen>
                     ),
                   ),
                   
-                  // সামনের ৩ডি মডেল (তোমার নতুন ক্যামেরা সেটিং সহ) 🎥
+                  // সামনের ৩ডি মডেল 🏹
                   const SizedBox(
-                    width: 500, // ক্যারেক্টার একটু বড় দেখানোর জন্য সাইজ বাড়ানো হলো
-                    height: 500,
+                    width: 600, // ৪.৫m দূরত্বের জন্য সাইজ একটু বড় রাখা হলো
+                    height: 600,
                     child: ModelViewer(
-                      // 👈 তোমার আসল ক্যারেক্টার গিটহাবে আপলোড করার পর এখানে 'assets/models/character.glb' বসিয়ে দেবে
+                      // 👈 এখানে 'assets/models/character.glb' বসাবে তোমার ফাইল আপলোড করার পর
                       src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
                       alt: "3D Character",
-                      autoRotate: false, // ক্যারেক্টার নিজে ঘুরবে না
-                      cameraControls: true, // প্লেয়ার ঘোরাতে পারবে
+                      autoRotate: false,
+                      cameraControls: true,
                       disableZoom: true,
-                      disablePan: true, // 👈 নতুন যোগ করা হলো
+                      disablePan: true,
                       
-                      // 🎥 Perfect Lobby Camera Settings
-                      cameraOrbit: "0deg 80deg 2.2m",
-                      minCameraOrbit: "-180deg 70deg 2.2m",
-                      maxCameraOrbit: "180deg 90deg 2.2m",
+                      // 🎥 FINAL PERFECT VALUES (তোমার দেওয়া কোড থেকে)
+                      cameraOrbit: "0deg 76deg 4.5m",
+                      minCameraOrbit: "-140deg 72deg 4.5m",
+                      maxCameraOrbit: "140deg 85deg 4.5m",
+                      fieldOfView: "24deg",
+                      exposure: 1.1,
+                      shadowIntensity: 1,
                       
                       backgroundColor: Colors.transparent,
                     ),
@@ -181,22 +181,18 @@ class _LobbyScreenState extends State<LobbyScreen>
               top: 150,
               child: Column(
                 children: const [
-                  Icon(Icons.swap_horiz,
-                      color: Colors.white, size: 30),
+                  Icon(Icons.swap_horiz, color: Colors.white, size: 30),
                   SizedBox(height: 20),
-                  Icon(Icons.settings,
-                      color: Colors.white, size: 30),
+                  Icon(Icons.settings, color: Colors.white, size: 30),
                   SizedBox(height: 20),
-                  Icon(Icons.group,
-                      color: Colors.white, size: 30),
+                  Icon(Icons.group, color: Colors.white, size: 30),
                   SizedBox(height: 20),
-                  Icon(Icons.mail,
-                      color: Colors.white, size: 30),
+                  Icon(Icons.mail, color: Colors.white, size: 30),
                 ],
               ),
             ),
 
-            /// 🔥 MAP + START BUTTON
+            /// 🔥 MAP + START BUTTON (তোমার Premium Style)
             Positioned(
               right: 40,
               bottom: 40,
@@ -204,32 +200,31 @@ class _LobbyScreenState extends State<LobbyScreen>
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     decoration: BoxDecoration(
                       color: Colors.white24,
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: const Text("Map: Bermuda",
-                        style: TextStyle(color: Colors.white)),
+                    child: const Text("Map: Bermuda", style: TextStyle(color: Colors.white)),
                   ),
                   const SizedBox(height: 15),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orange,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 50, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30), // তোমার নতুন বাটনের ডিজাইন 
+                        borderRadius: BorderRadius.circular(40), // 👈 Premium rounded
                       ),
+                      elevation: 12, // 👈 Premium shadow
                     ),
                     onPressed: () {},
                     child: const Text(
                       "START",
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                          letterSpacing: 2), // 👈 Premium text spacing
                     ),
                   )
                 ],
@@ -260,3 +255,4 @@ class MenuItem extends StatelessWidget {
     );
   }
 }
+
