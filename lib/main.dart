@@ -149,17 +149,25 @@ class _LobbyScreenState extends State<LobbyScreen>
                       ),
                     ),
                   ),
-                  // সামনের ৩ডি মডেল 🏹
+                  
+                  // সামনের ৩ডি মডেল (তোমার নতুন ক্যামেরা সেটিং সহ) 🎥
                   const SizedBox(
-                    width: 400,
-                    height: 400,
+                    width: 500, // ক্যারেক্টার একটু বড় দেখানোর জন্য সাইজ বাড়ানো হলো
+                    height: 500,
                     child: ModelViewer(
-                      // 👈 এখানে সরাসরি ইন্টারনেটের লিংক দেওয়া হলো টেস্ট করার জন্য
+                      // 👈 তোমার আসল ক্যারেক্টার গিটহাবে আপলোড করার পর এখানে 'assets/models/character.glb' বসিয়ে দেবে
                       src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
                       alt: "3D Character",
-                      autoRotate: true,
-                      cameraControls: true,
+                      autoRotate: false, // ক্যারেক্টার নিজে ঘুরবে না
+                      cameraControls: true, // প্লেয়ার ঘোরাতে পারবে
                       disableZoom: true,
+                      disablePan: true, // 👈 নতুন যোগ করা হলো
+                      
+                      // 🎥 Perfect Lobby Camera Settings
+                      cameraOrbit: "0deg 80deg 2.2m",
+                      minCameraOrbit: "-180deg 70deg 2.2m",
+                      maxCameraOrbit: "180deg 90deg 2.2m",
+                      
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -211,13 +219,17 @@ class _LobbyScreenState extends State<LobbyScreen>
                       backgroundColor: Colors.orange,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 50, vertical: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30), // তোমার নতুন বাটনের ডিজাইন 
+                      ),
                     ),
                     onPressed: () {},
                     child: const Text(
                       "START",
                       style: TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold),
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
                     ),
                   )
                 ],
