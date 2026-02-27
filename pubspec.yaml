@@ -1,11 +1,6 @@
-name: jungle_escape
-<<<<<<< HEAD
+name: full_game_ui
 description: Full Game UI Base
-publish_to: "none"
-=======
-description: A 3D Battle Lobby Game UI
 publish_to: 'none'
->>>>>>> da79888761589ad958f52efa41fe4a8826b56597
 
 version: 1.0.0+1
 
@@ -15,28 +10,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-<<<<<<< HEAD
-  audioplayers: ^5.2.1
-=======
 
-  cupertino_icons: ^1.0.6
-  model_viewer_plus: ^1.7.0
->>>>>>> da79888761589ad958f52efa41fe4a8826b56597
+  cupertino_icons: ^1.0.2
+  flame: ^1.17.0
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.1
-
 flutter:
-<<<<<<< HEAD
-  uses-material-design: true
-=======
   uses-material-design: true
 
   assets:
-    - assets/models/archer_boy.glb
-    - assets/models/archer_girl.glb
-    - assets/images/player_avatar.png
->>>>>>> da79888761589ad958f52efa41fe4a8826b56597
+    - assets/images/
+    - assets/sounds/
