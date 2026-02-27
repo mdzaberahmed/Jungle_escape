@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart'; // 👈 ৩ডি মডেল প্যাকেজ
+import 'package:model_viewer_plus/model_viewer_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -154,7 +154,8 @@ class _LobbyScreenState extends State<LobbyScreen>
                     width: 400,
                     height: 400,
                     child: ModelViewer(
-                      src: 'assets/models/archer.glb', // 👈 তোমার ৩ডি ফাইল
+                      // 👈 এখানে সরাসরি ইন্টারনেটের লিংক দেওয়া হলো টেস্ট করার জন্য
+                      src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
                       alt: "3D Character",
                       autoRotate: true,
                       cameraControls: true,
