@@ -1,15 +1,16 @@
 name: jungle_escape
-description: A new Flutter project.
-publish_to: 'none'
+description: Full Game UI Base
+publish_to: "none"
+
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  model_viewer_plus: ^1.7.0 # 3D মডেল দেখানোর প্যাকেজ
+  audioplayers: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -18,5 +19,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/models/ # 3D মডেলের ফোল্ডার

@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 
 void main() {
-  runApp(const JungleEscapeApp());
+  runApp(const JungleApp());
 }
 
-class JungleEscapeApp extends StatelessWidget {
-  const JungleEscapeApp({super.key});
+class JungleApp extends StatelessWidget {
+  const JungleApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Jungle Escape',
-      theme: ThemeData(primarySwatch: Colors.green),
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
