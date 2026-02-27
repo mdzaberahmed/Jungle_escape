@@ -56,182 +56,188 @@ class _LobbyScreenState extends State<LobbyScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Color(0xff0f2027), Color(0xff203a43)],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+
+          // 🎨 Cinematic Dark Background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF14002B),
+                  Color(0xFF000000),
+                ],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
           ),
-        ),
-        child: Stack(
-          children: [
 
-            /// 🔥 TOP BAR
-            Positioned(
-              top: 20,
-              left: 20,
-              right: 20,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      CircleAvatar(radius: 25, child: Icon(Icons.person)),
-                      SizedBox(width: 10),
-                      Text("SK_ROKI", // 👈 তোমার নতুন টেক্সট স্টাইল
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              letterSpacing: 1.2)),
-                    ],
-                  ),
-                  Row(
-                    children: const [
-                      Icon(Icons.monetization_on, color: Colors.amber),
-                      SizedBox(width: 5),
-                      Text("5000", style: TextStyle(color: Colors.white)),
-                      SizedBox(width: 20),
-                      Icon(Icons.diamond, color: Colors.blueAccent),
-                      SizedBox(width: 5),
-                      Text("10", style: TextStyle(color: Colors.white)),
-                    ],
-                  )
-                ],
-              ),
-            ),
-
-            /// 🔥 LEFT MENU
-            Positioned(
-              left: 20,
-              top: 120,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  MenuItem(title: "STORE"),
-                  MenuItem(title: "MISSIONS"),
-                  MenuItem(title: "EVENTS"),
-                  MenuItem(title: "VAULT"),
-                ],
-              ),
-            ),
-
-            /// 🔥 CENTER CHARACTER (3D Model + Glowing Background)
-            Center(
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // পেছনের ঘূর্ণায়মান গ্লোয়িং ইফেক্ট 🌟
-                  AnimatedBuilder(
-                    animation: _controller,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _controller.value * 2 * pi,
-                        child: child,
-                      );
-                    },
-                    child: Container(
-                      width: 350,
-                      height: 350,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.orange.withOpacity(0.7),
-                            blurRadius: 40,
-                            spreadRadius: 10,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  
-                  // সামনের ৩ডি মডেল 🏹
-                  const SizedBox(
-                    width: 600, // ৪.৫m দূরত্বের জন্য সাইজ একটু বড় রাখা হলো
-                    height: 600,
-                    child: ModelViewer(
-                      // 👈 এখানে 'assets/models/character.glb' বসাবে তোমার ফাইল আপলোড করার পর
-                      src: 'https://modelviewer.dev/shared-assets/models/Astronaut.glb', 
-                      alt: "3D Character",
-                      autoRotate: false,
-                      cameraControls: true,
-                      disableZoom: true,
-                      disablePan: true,
-                      
-                      // 🎥 FINAL PERFECT VALUES (তোমার দেওয়া কোড থেকে)
-                      cameraOrbit: "0deg 76deg 4.5m",
-                      minCameraOrbit: "-140deg 72deg 4.5m",
-                      maxCameraOrbit: "140deg 85deg 4.5m",
-                      fieldOfView: "24deg",
-                      exposure: 1.1,
-                      shadowIntensity: 1,
-                      
-                      backgroundColor: Colors.transparent,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            /// 🔥 RIGHT SIDE
-            Positioned(
-              right: 20,
-              top: 150,
-              child: Column(
-                children: const [
-                  Icon(Icons.swap_horiz, color: Colors.white, size: 30),
-                  SizedBox(height: 20),
-                  Icon(Icons.settings, color: Colors.white, size: 30),
-                  SizedBox(height: 20),
-                  Icon(Icons.group, color: Colors.white, size: 30),
-                  SizedBox(height: 20),
-                  Icon(Icons.mail, color: Colors.white, size: 30),
-                ],
-              ),
-            ),
-
-            /// 🔥 MAP + START BUTTON (তোমার Premium Style)
-            Positioned(
-              right: 40,
-              bottom: 40,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          /// 🔥 CENTER CHARACTER (3D Model + Glowing Background)
+          Center(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // পেছনের ঘূর্ণায়মান গ্লোয়িং ইফেক্ট 🌟
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _controller.value * 2 * pi,
+                      child: child,
+                    );
+                  },
+                  child: Container(
+                    width: 350,
+                    height: 350,
                     decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(10),
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.orange.withOpacity(0.7),
+                          blurRadius: 40,
+                          spreadRadius: 10,
+                        )
+                      ],
                     ),
-                    child: const Text("Map: Bermuda", style: TextStyle(color: Colors.white)),
                   ),
-                  const SizedBox(height: 15),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(40), // 👈 Premium rounded
-                      ),
-                      elevation: 12, // 👈 Premium shadow
-                    ),
-                    onPressed: () {},
-                    child: const Text(
-                      "START",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 2), // 👈 Premium text spacing
-                    ),
-                  )
-                ],
-              ),
+                ),
+                
+                // সামনের ৩ডি মডেল 🏹
+                const SizedBox(
+                  width: 600,
+                  height: 600,
+                  child: ModelViewer(
+                    // 👈 তোমার আপলোড করা মডেল
+                    src: 'assets/models/survival_character.glb', 
+                    alt: "Survival Character",
+                    autoRotate: false,
+                    cameraControls: true,
+                    disableZoom: true,
+                    disablePan: true,
+                    
+                    // 🎥 FINAL PERFECT VALUES (দূরত্ব 4.5m থেকে 7m করা হলো)
+                    cameraOrbit: "0deg 76deg 7m",
+                    minCameraOrbit: "-140deg 72deg 7m",
+                    maxCameraOrbit: "140deg 85deg 7m",
+                    fieldOfView: "24deg",
+                    exposure: 1.1,
+                    shadowIntensity: 1,
+                    
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+
+          /// 🔥 TOP BAR
+          Positioned(
+            top: 20,
+            left: 20,
+            right: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: const [
+                    CircleAvatar(radius: 25, child: Icon(Icons.person)),
+                    SizedBox(width: 10),
+                    Text("SK_ROKI", 
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: 1.2)),
+                  ],
+                ),
+                Row(
+                  children: const [
+                    Icon(Icons.monetization_on, color: Colors.amber),
+                    SizedBox(width: 5),
+                    Text("5000", style: TextStyle(color: Colors.white)),
+                    SizedBox(width: 20),
+                    Icon(Icons.diamond, color: Colors.blueAccent),
+                    SizedBox(width: 5),
+                    Text("10", style: TextStyle(color: Colors.white)),
+                  ],
+                )
+              ],
+            ),
+          ),
+
+          /// 🔥 LEFT MENU
+          Positioned(
+            left: 20,
+            top: 120,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                MenuItem(title: "STORE"),
+                MenuItem(title: "MISSIONS"),
+                MenuItem(title: "EVENTS"),
+                MenuItem(title: "VAULT"),
+              ],
+            ),
+          ),
+
+          /// 🔥 RIGHT SIDE
+          Positioned(
+            right: 20,
+            top: 150,
+            child: Column(
+              children: const [
+                Icon(Icons.swap_horiz, color: Colors.white, size: 30),
+                SizedBox(height: 20),
+                Icon(Icons.settings, color: Colors.white, size: 30),
+                SizedBox(height: 20),
+                Icon(Icons.group, color: Colors.white, size: 30),
+                SizedBox(height: 20),
+                Icon(Icons.mail, color: Colors.white, size: 30),
+              ],
+            ),
+          ),
+
+          /// 🔥 MAP + START BUTTON
+          Positioned(
+            right: 40,
+            bottom: 40,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Text("Map: Bermuda", style: TextStyle(color: Colors.white)),
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40), 
+                    ),
+                    elevation: 12, 
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    "START",
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2), 
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -255,4 +261,3 @@ class MenuItem extends StatelessWidget {
     );
   }
 }
-
