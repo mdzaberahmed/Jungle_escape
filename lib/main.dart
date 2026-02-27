@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:model_viewer_plus/model_viewer_plus.dart'; // 👈 ৩ডি মডেল প্যাকেজ
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,6 +48,12 @@ class _LobbyScreenState extends State<LobbyScreen>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -70,7 +77,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                 children: [
                   Row(
                     children: const [
-                      CircleAvatar(radius: 25),
+                      CircleAvatar(radius: 25, child: Icon(Icons.person)),
                       SizedBox(width: 10),
                       Text("SK ROKI",
                           style: TextStyle(
@@ -113,20 +120,21 @@ class _LobbyScreenState extends State<LobbyScreen>
               ),
             ),
 
-            /// 🔥 CENTER CHARACTER
+            /// 🔥 CENTER CHARACTER (3D Model + Glowing Background)
             Center(
-              child: AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _controller.value * 2 * pi,
-                    child: child,
-                  );
-                },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  // পেছনের ঘূর্ণায়মান গ্লোয়িং ইফেক্ট 🌟
+                  AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, child) {
+                      return Transform.rotate(
+                        angle: _controller.value * 2 * pi,
+                        child: child,
+                      );
+                    },
+                    child: Container(
                       width: 350,
                       height: 350,
                       decoration: BoxDecoration(
@@ -140,12 +148,21 @@ class _LobbyScreenState extends State<LobbyScreen>
                         ],
                       ),
                     ),
-                    Image.network(
-                      "https://i.imgur.com/8Km9tLL.png",
-                      height: 300,
+                  ),
+                  // সামনের ৩ডি মডেল 🏹
+                  const SizedBox(
+                    width: 400,
+                    height: 400,
+                    child: ModelViewer(
+                      src: 'assets/models/archer.glb', // 👈 তোমার ৩ডি ফাইল
+                      alt: "3D Character",
+                      autoRotate: true,
+                      cameraControls: true,
+                      disableZoom: true,
+                      backgroundColor: Colors.transparent,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
