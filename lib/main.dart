@@ -37,6 +37,9 @@ class _LobbyScreenState extends State<LobbyScreen>
     with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
+  
+  // 👈 বর্তমান সিলেক্ট করা ম্যাপের নাম রাখার জন্য ভেরিয়েবল
+  String _selectedMap = "Neon Nexus"; 
 
   @override
   void initState() {
@@ -51,6 +54,54 @@ class _LobbyScreenState extends State<LobbyScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  // 🗺️ ম্যাপ নির্বাচনের পপ-আপ ডায়ালগ ফাংশন
+  void _showMapSelectionDialog() {
+    List<String> mapList = ["Neon Nexus", "Crimson Sands", "Frostbite Ridge"];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xff0f2027),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Text(
+            "SELECT MAP",
+            style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
+          content: SizedBox(
+            width: 300,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: mapList.length,
+              itemBuilder: (context, index) {
+                bool isSelected = _selectedMap == mapList[index];
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    color: isSelected ? Colors.orange.withOpacity(0.2) : Colors.white12,
+                    border: Border.all(color: isSelected ? Colors.orange : Colors.transparent),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ListTile(
+                    title: Text(mapList[index], style: const TextStyle(color: Colors.white, fontSize: 18)),
+                    trailing: isSelected ? const Icon(Icons.check_circle, color: Colors.orange) : null,
+                    onTap: () {
+                      setState(() {
+                        _selectedMap = mapList[index]; // 👈 নতুন ম্যাপ সিলেক্ট করা
+                      });
+                      Navigator.pop(context); // ডায়ালগ বন্ধ করা
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -79,7 +130,6 @@ class _LobbyScreenState extends State<LobbyScreen>
             child: Stack(
               alignment: Alignment.center,
               children: [
-                // পেছনের ঘূর্ণায়মান গ্লোয়িং ইফেক্ট 🌟
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
@@ -104,7 +154,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                   ),
                 ),
                 
-                // সামনের ৩ডি মডেল 🏹
                 const SizedBox(
                   width: 600,
                   height: 600,
@@ -116,7 +165,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     disableZoom: true,
                     disablePan: true,
                     
-                    // 🎥 FINAL PERFECT VALUES (দূরত্ব 9m করা হলো)
                     cameraOrbit: "0deg 76deg 9m",
                     minCameraOrbit: "-140deg 72deg 9m",
                     maxCameraOrbit: "140deg 85deg 9m",
@@ -205,13 +253,25 @@ class _LobbyScreenState extends State<LobbyScreen>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white24,
-                    borderRadius: BorderRadius.circular(10),
+                // 👈 ক্লিকেবল ম্যাপ বাটন
+                GestureDetector(
+                  onTap: _showMapSelectionDialog,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: Colors.white24,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.white54, width: 1),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text("Map: $_selectedMap", style: const TextStyle(color: Colors.white, fontSize: 16)),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_drop_down, color: Colors.white),
+                      ],
+                    ),
                   ),
-                  child: const Text("Map: Bermuda", style: TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(height: 15),
                 ElevatedButton(
@@ -260,3 +320,4 @@ class MenuItem extends StatelessWidget {
     );
   }
 }
+
