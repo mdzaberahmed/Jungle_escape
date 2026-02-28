@@ -57,10 +57,8 @@ class _LobbyScreenState extends State<LobbyScreen>
 
   // 🗺️ Premium Grid Map Selection Dialog
   void _showMapSelectionDialog() {
-    // পপ-আপের ভেতরে সিলেক্ট করা ম্যাপ মনে রাখার জন্য
     String tempSelectedMap = _selectedMap; 
 
-    // ৬টি ম্যাপের ডেমো ডাটা (পরবর্তীতে কালারের জায়গায় তুমি ম্যাপের ছবি দিতে পারবে)
     List<Map<String, dynamic>> maps = [
       {"name": "Neon Nexus", "color": Colors.blueGrey},
       {"name": "Crimson Sands", "color": Colors.brown},
@@ -77,12 +75,12 @@ class _LobbyScreenState extends State<LobbyScreen>
           backgroundColor: const Color(0xFF1E1E1E),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: SizedBox(
-            width: 700, // পপ-আপের চওড়া সাইজ
+            width: 700, 
             height: 450,
             child: Column(
               children: [
                 
-                // 🔝 Top Header (সাদা ব্যাকগ্রাউন্ড, ডানদিকে Close আইকন)
+                // 🔝 Top Header 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   decoration: const BoxDecoration(
@@ -109,7 +107,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                         padding: const EdgeInsets.all(15),
                         child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, // এক লাইনে ৩টি ম্যাপ
+                            crossAxisCount: 3, 
                             crossAxisSpacing: 15,
                             mainAxisSpacing: 15,
                             childAspectRatio: 16 / 9,
@@ -121,14 +119,14 @@ class _LobbyScreenState extends State<LobbyScreen>
                             return GestureDetector(
                               onTap: () {
                                 setDialogState(() {
-                                  tempSelectedMap = maps[index]["name"]; // ম্যাপ সিলেক্ট করা
+                                  tempSelectedMap = maps[index]["name"]; 
                                 });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  color: maps[index]["color"], // আপাতত কালার দেওয়া হলো
+                                  color: maps[index]["color"], 
                                   border: Border.all(
-                                    color: isSelected ? Colors.yellow : Colors.transparent, // সিলেক্ট হলে হলুদ বর্ডার
+                                    color: isSelected ? Colors.yellow : Colors.transparent, 
                                     width: 3
                                   ),
                                   borderRadius: BorderRadius.circular(8)
@@ -137,7 +135,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                                 padding: const EdgeInsets.all(8),
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                  color: Colors.black54, // নামের পেছনে হালকা কালো ব্যাকগ্রাউন্ড
+                                  color: Colors.black54, 
                                   child: Text(
                                     maps[index]["name"], 
                                     style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
@@ -152,7 +150,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                   )
                 ),
 
-                // 🔽 Bottom Footer (CONFIRM Button)
+                // 🔽 Bottom Footer 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   color: Colors.black12,
@@ -167,9 +165,9 @@ class _LobbyScreenState extends State<LobbyScreen>
                         ),
                         onPressed: () {
                           setState(() {
-                            _selectedMap = tempSelectedMap; // আসল ম্যাপ আপডেট করা
+                            _selectedMap = tempSelectedMap; 
                           });
-                          Navigator.pop(context); // ডায়ালগ বন্ধ করা
+                          Navigator.pop(context); 
                         },
                         child: const Text("CONFIRM", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))
                       )
@@ -192,7 +190,7 @@ class _LobbyScreenState extends State<LobbyScreen>
       body: Stack(
         children: [
 
-          // 🎨 Cinematic Dark Background
+          // 🎨 Background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -236,8 +234,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     cameraControls: true,
                     disableZoom: true,
                     disablePan: true,
-                    
-                    // 🎥 FINAL AUTO CAMERA: 'auto' নিজে থেকেই ক্যারেক্টারের পারফেক্ট সাইজ বের করে নেবে
                     cameraOrbit: "0deg 75deg auto", 
                     fieldOfView: "45deg", 
                     exposure: 1.1,
@@ -331,7 +327,15 @@ class _LobbyScreenState extends State<LobbyScreen>
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
                     elevation: 12, 
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    // 👈 এখানে নতুন স্ক্রিনে যাওয়ার কোড যোগ করা হয়েছে
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GameScreen(mapName: _selectedMap),
+                      ),
+                    );
+                  },
                   child: const Text(
                     "START",
                     style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 2), 
@@ -357,6 +361,56 @@ class MenuItem extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+}
+
+// 🎮 নতুন গেম স্ক্রিন (যেখানে ম্যাপ লোড হবে)
+class GameScreen extends StatelessWidget {
+  final String mapName; // কোন ম্যাপ সিলেক্ট হয়েছে তা মনে রাখার জন্য
+
+  const GameScreen({super.key, required this.mapName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blueGrey[900], // আপাতত একটি ব্যাকগ্রাউন্ড কালার
+      body: Stack(
+        children: [
+          // স্ক্রিনের মাঝখানে ম্যাপের নাম দেখাবে
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.map, size: 80, color: Colors.orange),
+                const SizedBox(height: 20),
+                Text(
+                  "LOADING MAP:\n$mapName",
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 2,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // লবিতে ফিরে যাওয়ার জন্য একটি ব্যাক বাটন
+          Positioned(
+            top: 20,
+            left: 20,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+              onPressed: () {
+                Navigator.pop(context); // 👈 এটি চাপলে আবার লবিতে ফিরে যাবে
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
