@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
+// 👈 তোমার নতুন বানানো ফাইলটি এখানে লিংক করা হলো
+import 'screens/game_screen.dart'; 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -55,7 +58,6 @@ class _LobbyScreenState extends State<LobbyScreen>
     super.dispose();
   }
 
-  // 🗺️ Premium Grid Map Selection Dialog
   void _showMapSelectionDialog() {
     String tempSelectedMap = _selectedMap; 
 
@@ -79,8 +81,6 @@ class _LobbyScreenState extends State<LobbyScreen>
             height: 450,
             child: Column(
               children: [
-                
-                // 🔝 Top Header 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   decoration: const BoxDecoration(
@@ -98,8 +98,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     ],
                   )
                 ),
-
-                // 🖼️ Grid Map List
                 Expanded(
                   child: StatefulBuilder(
                     builder: (context, setDialogState) {
@@ -149,8 +147,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     }
                   )
                 ),
-
-                // 🔽 Bottom Footer 
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   color: Colors.black12,
@@ -174,7 +170,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     ]
                   )
                 )
-
               ]
             )
           )
@@ -189,8 +184,6 @@ class _LobbyScreenState extends State<LobbyScreen>
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-
-          // 🎨 Background
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -200,8 +193,6 @@ class _LobbyScreenState extends State<LobbyScreen>
               ),
             ),
           ),
-
-          /// 🔥 CENTER CHARACTER
           Center(
             child: Stack(
               alignment: Alignment.center,
@@ -224,7 +215,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     ),
                   ),
                 ),
-                
                 const SizedBox(
                   width: 600, height: 600,
                   child: ModelViewer(
@@ -234,7 +224,9 @@ class _LobbyScreenState extends State<LobbyScreen>
                     cameraControls: true,
                     disableZoom: true,
                     disablePan: true,
-                    cameraOrbit: "0deg 75deg auto", 
+                    cameraOrbit: "0deg 85deg 25m", 
+                    minCameraOrbit: "-140deg 75deg 25m",
+                    maxCameraOrbit: "140deg 95deg 25m",
                     fieldOfView: "45deg", 
                     exposure: 1.1,
                     shadowIntensity: 1,
@@ -244,8 +236,6 @@ class _LobbyScreenState extends State<LobbyScreen>
               ],
             ),
           ),
-
-          /// 🔥 TOP BAR
           Positioned(
             top: 20, left: 20, right: 20,
             child: Row(
@@ -268,8 +258,6 @@ class _LobbyScreenState extends State<LobbyScreen>
               ],
             ),
           ),
-
-          /// 🔥 LEFT MENU
           Positioned(
             left: 20, top: 120,
             child: Column(
@@ -280,8 +268,6 @@ class _LobbyScreenState extends State<LobbyScreen>
               ],
             ),
           ),
-
-          /// 🔥 RIGHT SIDE
           Positioned(
             right: 20, top: 150,
             child: Column(
@@ -293,8 +279,6 @@ class _LobbyScreenState extends State<LobbyScreen>
               ],
             ),
           ),
-
-          /// 🔥 MAP + START BUTTON
           Positioned(
             right: 40, bottom: 40,
             child: Column(
@@ -328,10 +312,10 @@ class _LobbyScreenState extends State<LobbyScreen>
                     elevation: 12, 
                   ),
                   onPressed: () {
-                    // 👈 এখানে নতুন স্ক্রিনে যাওয়ার কোড যোগ করা হয়েছে
                     Navigator.push(
                       context,
                       MaterialPageRoute(
+                        // 👈 এখানে GameScreen এখন নতুন ফাইল থেকে লোড হবে
                         builder: (context) => GameScreen(mapName: _selectedMap),
                       ),
                     );
@@ -361,56 +345,6 @@ class MenuItem extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
-      ),
-    );
-  }
-}
-
-// 🎮 নতুন গেম স্ক্রিন (যেখানে ম্যাপ লোড হবে)
-class GameScreen extends StatelessWidget {
-  final String mapName; // কোন ম্যাপ সিলেক্ট হয়েছে তা মনে রাখার জন্য
-
-  const GameScreen({super.key, required this.mapName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.blueGrey[900], // আপাতত একটি ব্যাকগ্রাউন্ড কালার
-      body: Stack(
-        children: [
-          // স্ক্রিনের মাঝখানে ম্যাপের নাম দেখাবে
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.map, size: 80, color: Colors.orange),
-                const SizedBox(height: 20),
-                Text(
-                  "LOADING MAP:\n$mapName",
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // লবিতে ফিরে যাওয়ার জন্য একটি ব্যাক বাটন
-          Positioned(
-            top: 20,
-            left: 20,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-              onPressed: () {
-                Navigator.pop(context); // 👈 এটি চাপলে আবার লবিতে ফিরে যাবে
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
