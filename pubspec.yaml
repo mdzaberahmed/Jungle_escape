@@ -22,7 +22,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  # তোমার আপলোড করা নতুন অ্যাসেট 📦
+  # 📦 তোমার নতুন ক্যারেক্টার মডেল
   assets:
-    - assets/models/survival_character.glb
+    - assets/models/player.glb
     
