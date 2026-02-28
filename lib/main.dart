@@ -109,15 +109,15 @@ class _LobbyScreenState extends State<LobbyScreen>
                   width: 600,
                   height: 600,
                   child: ModelViewer(
-                    // 👈 তোমার আপলোড করা মডেল
-                    src: 'assets/models/survival_character.glb', 
-                    alt: "Survival Character",
+                    // 👈 তোমার নতুন আপলোড করা মডেল player.glb
+                    src: 'assets/models/player.glb', 
+                    alt: "Player Character",
                     autoRotate: false,
                     cameraControls: true,
                     disableZoom: true,
                     disablePan: true,
                     
-                    // 🎥 FINAL PERFECT VALUES (দূরত্ব 4.5m থেকে 7m করা হলো)
+                    // 🎥 FINAL PERFECT VALUES 
                     cameraOrbit: "0deg 76deg 7m",
                     minCameraOrbit: "-140deg 72deg 7m",
                     maxCameraOrbit: "140deg 85deg 7m",
