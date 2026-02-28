@@ -109,7 +109,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                   width: 600,
                   height: 600,
                   child: ModelViewer(
-                    // 👈 তোমার নতুন আপলোড করা মডেল player.glb
                     src: 'assets/models/player.glb', 
                     alt: "Player Character",
                     autoRotate: false,
@@ -117,10 +116,10 @@ class _LobbyScreenState extends State<LobbyScreen>
                     disableZoom: true,
                     disablePan: true,
                     
-                    // 🎥 FINAL PERFECT VALUES 
-                    cameraOrbit: "0deg 76deg 7m",
-                    minCameraOrbit: "-140deg 72deg 7m",
-                    maxCameraOrbit: "140deg 85deg 7m",
+                    // 🎥 FINAL PERFECT VALUES (দূরত্ব 9m করা হলো)
+                    cameraOrbit: "0deg 76deg 9m",
+                    minCameraOrbit: "-140deg 72deg 9m",
+                    maxCameraOrbit: "140deg 85deg 9m",
                     fieldOfView: "24deg",
                     exposure: 1.1,
                     shadowIntensity: 1,
