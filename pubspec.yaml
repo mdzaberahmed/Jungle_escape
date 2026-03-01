@@ -29,6 +29,6 @@ flutter:
     - assets/models/char1.glb
     - assets/models/char2.glb
     - assets/models/char3.glb
-    - assets/models/sword.glb   # 👈 নতুন
-    - assets/models/phoenix.glb # 👈 নতুন
+    - assets/models/sword.glb
+    - assets/models/phoenix_bird.glb  # 👈 ফাইলের সঠিক নাম দেওয়া হয়েছে
     
