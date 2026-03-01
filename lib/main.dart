@@ -3,18 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
-// 👈 তোমার তৈরি করা নতুন স্ক্রিনগুলো এখানে লিংক করা হলো
 import 'screens/game_screen.dart';
 import 'screens/store_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeLeft,
     DeviceOrientation.landscapeRight,
   ]);
-
   runApp(const MyApp());
 }
 
@@ -41,15 +38,14 @@ class _LobbyScreenState extends State<LobbyScreen>
     with SingleTickerProviderStateMixin {
 
   late AnimationController _controller;
-  
   String _selectedMap = "Neon Nexus"; 
 
   @override
   void initState() {
     super.initState();
-
+    // এই কন্ট্রোলারটি একই সাথে নিচের গোল রিং এবং পাখি ঘোরাতে সাহায্য করবে
     _controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 10))
+        AnimationController(vsync: this, duration: const Duration(seconds: 8))
           ..repeat();
   }
 
@@ -61,7 +57,6 @@ class _LobbyScreenState extends State<LobbyScreen>
 
   void _showMapSelectionDialog() {
     String tempSelectedMap = _selectedMap; 
-
     List<Map<String, dynamic>> maps = [
       {"name": "Neon Nexus", "color": Colors.blueGrey},
       {"name": "Crimson Sands", "color": Colors.brown},
@@ -78,8 +73,7 @@ class _LobbyScreenState extends State<LobbyScreen>
           backgroundColor: const Color(0xFF1E1E1E),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: SizedBox(
-            width: 700, 
-            height: 450,
+            width: 700, height: 450,
             child: Column(
               children: [
                 Container(
@@ -106,28 +100,19 @@ class _LobbyScreenState extends State<LobbyScreen>
                         padding: const EdgeInsets.all(15),
                         child: GridView.builder(
                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, 
-                            crossAxisSpacing: 15,
-                            mainAxisSpacing: 15,
-                            childAspectRatio: 16 / 9,
+                            crossAxisCount: 3, crossAxisSpacing: 15, mainAxisSpacing: 15, childAspectRatio: 16 / 9,
                           ),
                           itemCount: maps.length,
                           itemBuilder: (context, index) {
                             bool isSelected = tempSelectedMap == maps[index]["name"];
-                            
                             return GestureDetector(
                               onTap: () {
-                                setDialogState(() {
-                                  tempSelectedMap = maps[index]["name"]; 
-                                });
+                                setDialogState(() { tempSelectedMap = maps[index]["name"]; });
                               },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: maps[index]["color"], 
-                                  border: Border.all(
-                                    color: isSelected ? Colors.yellow : Colors.transparent, 
-                                    width: 3
-                                  ),
+                                  border: Border.all(color: isSelected ? Colors.yellow : Colors.transparent, width: 3),
                                   borderRadius: BorderRadius.circular(8)
                                 ),
                                 alignment: Alignment.bottomLeft,
@@ -135,10 +120,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   color: Colors.black54, 
-                                  child: Text(
-                                    maps[index]["name"], 
-                                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)
-                                  ),
+                                  child: Text(maps[index]["name"], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                 ),
                               )
                             );
@@ -155,15 +137,9 @@ class _LobbyScreenState extends State<LobbyScreen>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.amber,
-                          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))
-                        ),
+                        style: ElevatedButton.styleFrom(backgroundColor: Colors.amber, padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15)),
                         onPressed: () {
-                          setState(() {
-                            _selectedMap = tempSelectedMap; 
-                          });
+                          setState(() { _selectedMap = tempSelectedMap; });
                           Navigator.pop(context); 
                         },
                         child: const Text("CONFIRM", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16))
@@ -189,8 +165,7 @@ class _LobbyScreenState extends State<LobbyScreen>
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFF14002B), Color(0xFF000000)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+                begin: Alignment.topCenter, end: Alignment.bottomCenter,
               ),
             ),
           ),
@@ -198,6 +173,7 @@ class _LobbyScreenState extends State<LobbyScreen>
             child: Stack(
               alignment: Alignment.center,
               children: [
+                // ১. নিচের গ্লোয়িং রিং
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
@@ -210,33 +186,52 @@ class _LobbyScreenState extends State<LobbyScreen>
                     width: 350, height: 350,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(color: Colors.orange.withOpacity(0.7), blurRadius: 40, spreadRadius: 10)
-                      ],
+                      boxShadow: [BoxShadow(color: Colors.orange.withOpacity(0.7), blurRadius: 40, spreadRadius: 10)],
                     ),
                   ),
                 ),
+                
+                // ২. মেইন ক্যারেক্টার
                 const SizedBox(
                   width: 600, height: 600,
                   child: ModelViewer(
                     src: 'assets/models/player.glb', 
                     alt: "Player Character",
-                    autoRotate: false,
-                    cameraControls: true,
-                    disableZoom: true,
-                    disablePan: true,
-                    cameraOrbit: "0deg 85deg 25m", 
-                    minCameraOrbit: "-140deg 75deg 25m",
-                    maxCameraOrbit: "140deg 95deg 25m",
-                    fieldOfView: "45deg", 
-                    exposure: 1.1,
-                    shadowIntensity: 1,
-                    backgroundColor: Colors.transparent,
+                    autoRotate: false, cameraControls: true, disableZoom: true, disablePan: true,
+                    cameraOrbit: "0deg 85deg 25m", minCameraOrbit: "-140deg 75deg 25m", maxCameraOrbit: "140deg 95deg 25m",
+                    fieldOfView: "45deg", exposure: 1.1, shadowIntensity: 1, backgroundColor: Colors.transparent,
                   ),
+                ),
+
+                // ৩. উড়ন্ত ফিনিক্স পাখি 🦅 (তোমার শেখানো Math লজিক দিয়ে!)
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    double angle = _controller.value * 2 * pi;
+                    // X এবং Y অক্ষে বৃত্তাকারে ঘোরার লজিক
+                    double dx = cos(angle) * 180; 
+                    double dy = sin(angle) * 40;  
+
+                    return Transform.translate(
+                      offset: Offset(dx, dy - 50), // -50 মানে একটু উপরের দিকে (কাঁধের কাছে) উড়বে
+                      child: SizedBox(
+                        width: 150, height: 150,
+                        child: IgnorePointer( // পাখি যেন ক্যারেক্টার ঘোরানোতে বাধা না দেয়
+                          child: ModelViewer(
+                            src: 'assets/models/phoenix_bird.glb',
+                            autoRotate: true, cameraControls: false, disableZoom: true, disablePan: true,
+                            backgroundColor: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
           ),
+
+          // --- UI Overlays (Top, Left, Right) ---
           Positioned(
             top: 20, left: 20, right: 20,
             child: Row(
@@ -260,7 +255,6 @@ class _LobbyScreenState extends State<LobbyScreen>
             ),
           ),
           
-          /// 🔥 LEFT MENU (আপডেট করা হয়েছে)
           Positioned(
             left: 20, top: 120,
             child: Column(
@@ -269,13 +263,7 @@ class _LobbyScreenState extends State<LobbyScreen>
                 MenuItem(
                   title: "STORE",
                   onTap: () {
-                    // 👈 স্টোর পেজে যাওয়ার কোড
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const StoreScreen(),
-                      ),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const StoreScreen()));
                   },
                 ), 
                 const MenuItem(title: "MISSIONS"),
@@ -306,16 +294,13 @@ class _LobbyScreenState extends State<LobbyScreen>
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     decoration: BoxDecoration(
-                      color: Colors.white24,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.white54, width: 1),
+                      color: Colors.white24, borderRadius: BorderRadius.circular(10), border: Border.all(color: Colors.white54, width: 1),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text("Map: $_selectedMap", style: const TextStyle(color: Colors.white, fontSize: 16)),
-                        const SizedBox(width: 8),
-                        const Icon(Icons.arrow_drop_down, color: Colors.white),
+                        const SizedBox(width: 8), const Icon(Icons.arrow_drop_down, color: Colors.white),
                       ],
                     ),
                   ),
@@ -323,23 +308,13 @@ class _LobbyScreenState extends State<LobbyScreen>
                 const SizedBox(height: 15),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-                    elevation: 12, 
+                    backgroundColor: Colors.orange, padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)), elevation: 12, 
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => GameScreen(mapName: _selectedMap),
-                      ),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => GameScreen(mapName: _selectedMap)));
                   },
-                  child: const Text(
-                    "START",
-                    style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 2), 
-                  ),
+                  child: const Text("START", style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 2)),
                 )
               ],
             ),
@@ -350,11 +325,9 @@ class _LobbyScreenState extends State<LobbyScreen>
   }
 }
 
-// 👈 MenuItem ক্লাসটিকে বাটন হিসেবে কাজ করার জন্য আপডেট করা হয়েছে
 class MenuItem extends StatelessWidget {
   final String title;
   final VoidCallback? onTap; 
-
   const MenuItem({super.key, required this.title, this.onTap});
 
   @override
@@ -363,10 +336,7 @@ class MenuItem extends StatelessWidget {
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: Text(
-          title,
-          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
-        ),
+        child: Text(title, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500)),
       ),
     );
   }
