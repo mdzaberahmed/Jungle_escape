@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 
-// 👈 তোমার নতুন বানানো ফাইলটি এখানে লিংক করা হলো
-import 'screens/game_screen.dart'; 
+// 👈 তোমার তৈরি করা নতুন স্ক্রিনগুলো এখানে লিংক করা হলো
+import 'screens/game_screen.dart';
+import 'screens/store_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -258,16 +259,32 @@ class _LobbyScreenState extends State<LobbyScreen>
               ],
             ),
           ),
+          
+          /// 🔥 LEFT MENU (আপডেট করা হয়েছে)
           Positioned(
             left: 20, top: 120,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                MenuItem(title: "STORE"), MenuItem(title: "MISSIONS"),
-                MenuItem(title: "EVENTS"), MenuItem(title: "VAULT"),
+              children: [
+                MenuItem(
+                  title: "STORE",
+                  onTap: () {
+                    // 👈 স্টোর পেজে যাওয়ার কোড
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const StoreScreen(),
+                      ),
+                    );
+                  },
+                ), 
+                const MenuItem(title: "MISSIONS"),
+                const MenuItem(title: "EVENTS"), 
+                const MenuItem(title: "VAULT"),
               ],
             ),
           ),
+          
           Positioned(
             right: 20, top: 150,
             child: Column(
@@ -315,7 +332,6 @@ class _LobbyScreenState extends State<LobbyScreen>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        // 👈 এখানে GameScreen এখন নতুন ফাইল থেকে লোড হবে
                         builder: (context) => GameScreen(mapName: _selectedMap),
                       ),
                     );
@@ -334,17 +350,23 @@ class _LobbyScreenState extends State<LobbyScreen>
   }
 }
 
+// 👈 MenuItem ক্লাসটিকে বাটন হিসেবে কাজ করার জন্য আপডেট করা হয়েছে
 class MenuItem extends StatelessWidget {
   final String title;
-  const MenuItem({super.key, required this.title});
+  final VoidCallback? onTap; 
+
+  const MenuItem({super.key, required this.title, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12),
-      child: Text(
-        title,
-        style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+    return GestureDetector( 
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+        ),
       ),
     );
   }
