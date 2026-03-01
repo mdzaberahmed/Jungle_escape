@@ -203,24 +203,27 @@ class _LobbyScreenState extends State<LobbyScreen>
                   ),
                 ),
 
-                // ৩. উড়ন্ত ফিনিক্স পাখি 🦅 (তোমার শেখানো Math লজিক দিয়ে!)
+                // ৩. উড়ন্ত ফিনিক্স পাখি 🦅
                 AnimatedBuilder(
                   animation: _controller,
                   builder: (context, child) {
                     double angle = _controller.value * 2 * pi;
-                    // X এবং Y অক্ষে বৃত্তাকারে ঘোরার লজিক
                     double dx = cos(angle) * 180; 
                     double dy = sin(angle) * 40;  
 
                     return Transform.translate(
-                      offset: Offset(dx, dy - 50), // -50 মানে একটু উপরের দিকে (কাঁধের কাছে) উড়বে
+                      offset: Offset(dx, dy - 50), 
                       child: SizedBox(
                         width: 150, height: 150,
-                        child: IgnorePointer( // পাখি যেন ক্যারেক্টার ঘোরানোতে বাধা না দেয়
+                        child: IgnorePointer( 
                           child: ModelViewer(
                             src: 'assets/models/phoenix_bird.glb',
-                            autoRotate: true, cameraControls: false, disableZoom: true, disablePan: true,
+                            autoRotate: true, 
+                            cameraControls: false, 
+                            disableZoom: true, 
+                            disablePan: true,
                             backgroundColor: Colors.transparent,
+                            autoPlay: true, // 👈 এই লাইনটি পাখির ডানা ঝাপটানোর অ্যানিমেশন চালু করবে!
                           ),
                         ),
                       ),
