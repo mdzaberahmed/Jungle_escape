@@ -9,15 +9,17 @@ class StoreScreen extends StatefulWidget {
 }
 
 class _StoreScreenState extends State<StoreScreen> {
-  // 📦 ক্যারেক্টারগুলোর লিস্ট
-  final List<Map<String, dynamic>> _characters = [
+  // 📦 স্টোরের সব আইটেমের লিস্ট
+  final List<Map<String, dynamic>> _items = [
     {"name": "Gojo Style", "model": "assets/models/player.glb", "price": "Owned", "type": "coins"},
     {"name": "Warrior Alpha", "model": "assets/models/char1.glb", "price": "2000", "type": "coins"},
     {"name": "Cyber Ninja", "model": "assets/models/char2.glb", "price": "50", "type": "diamonds"},
     {"name": "Shadow Hunter", "model": "assets/models/char3.glb", "price": "100", "type": "diamonds"},
+    {"name": "Katana Blade", "model": "assets/models/sword.glb", "price": "300", "type": "diamonds"},
+    {"name": "Fire Phoenix", "model": "assets/models/phoenix_bird.glb", "price": "500", "type": "diamonds"}, // 👈 নাম আপডেট করা হয়েছে
   ];
 
-  int _selectedIndex = 0; // ডানদিকে কোন মডেল দেখাবে তার ইনডেক্স
+  int _selectedIndex = 0; 
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,6 @@ class _StoreScreenState extends State<StoreScreen> {
         ),
         child: Column(
           children: [
-            // 🔙 টপ বার (Back Button & Coins)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               child: Row(
@@ -57,12 +58,9 @@ class _StoreScreenState extends State<StoreScreen> {
                 ],
               ),
             ),
-
-            // 🔲 মেইন ৩-কলাম লেআউট
             Expanded(
               child: Row(
                 children: [
-                  // ⬅️ ১. বাম দিক (Left Menu) - flex: 2 মানে এটি ২ ভাগ জায়গা নেবে
                   Expanded(
                     flex: 2,
                     child: Container(
@@ -73,13 +71,11 @@ class _StoreScreenState extends State<StoreScreen> {
                           _buildMenuButton("FASHION", true),
                           _buildMenuButton("COLLECTION", false),
                           _buildMenuButton("WEAPON", false),
-                          _buildMenuButton("ITEM", false),
+                          _buildMenuButton("PET", false),
                         ],
                       ),
                     ),
                   ),
-
-                  // 🔲 ২. মাঝখান (Center Grid) - flex: 5 মানে এটি সবচেয়ে বড় (৫ ভাগ) জায়গা নেবে
                   Expanded(
                     flex: 5,
                     child: Padding(
@@ -91,12 +87,11 @@ class _StoreScreenState extends State<StoreScreen> {
                           mainAxisSpacing: 10,
                           childAspectRatio: 0.8,
                         ),
-                        itemCount: _characters.length,
+                        itemCount: _items.length,
                         itemBuilder: (context, index) {
                           bool isSelected = _selectedIndex == index;
                           return GestureDetector(
                             onTap: () {
-                              // এখানে ক্লিক করলে ডানদিকের মডেল আপডেট হবে
                               setState(() {
                                 _selectedIndex = index;
                               });
@@ -113,19 +108,27 @@ class _StoreScreenState extends State<StoreScreen> {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(Icons.person, size: 50, color: Colors.white54), // এখানে পরে 2D ছবি দেওয়া যাবে
+                                  Icon(
+                                    _items[index]["name"].contains("Katana") 
+                                        ? Icons.sports_martial_arts 
+                                        : _items[index]["name"].contains("Phoenix") 
+                                            ? Icons.pets 
+                                            : Icons.person, 
+                                    size: 50, 
+                                    color: Colors.white54
+                                  ), 
                                   const SizedBox(height: 10),
-                                  Text(_characters[index]["name"], style: const TextStyle(color: Colors.white)),
+                                  Text(_items[index]["name"], style: const TextStyle(color: Colors.white)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Icon(
-                                        _characters[index]["type"] == "diamonds" ? Icons.diamond : Icons.monetization_on,
-                                        color: _characters[index]["type"] == "diamonds" ? Colors.blueAccent : Colors.amber,
+                                        _items[index]["type"] == "diamonds" ? Icons.diamond : Icons.monetization_on,
+                                        color: _items[index]["type"] == "diamonds" ? Colors.blueAccent : Colors.amber,
                                         size: 16,
                                       ),
                                       const SizedBox(width: 5),
-                                      Text(_characters[index]["price"], style: const TextStyle(color: Colors.white70)),
+                                      Text(_items[index]["price"], style: const TextStyle(color: Colors.white70)),
                                     ],
                                   )
                                 ],
@@ -136,8 +139,6 @@ class _StoreScreenState extends State<StoreScreen> {
                       ),
                     ),
                   ),
-
-                  // ➡️ ৩. ডান দিক (Right Preview) - flex: 4 মানে এটি ৪ ভাগ জায়গা নেবে
                   Expanded(
                     flex: 4,
                     child: Column(
@@ -146,9 +147,9 @@ class _StoreScreenState extends State<StoreScreen> {
                         SizedBox(
                           height: 350,
                           child: ModelViewer(
-                            key: ValueKey(_characters[_selectedIndex]["model"]), // মডেল রিফ্রেশ করার জন্য
-                            src: _characters[_selectedIndex]["model"],
-                            alt: "Character Model",
+                            key: ValueKey(_items[_selectedIndex]["model"]), 
+                            src: _items[_selectedIndex]["model"],
+                            alt: "Store Item",
                             autoRotate: true,
                             cameraControls: true,
                             disableZoom: true,
@@ -163,9 +164,7 @@ class _StoreScreenState extends State<StoreScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           ),
-                          onPressed: () {
-                            // কেনার লজিক এখানে বসবে
-                          },
+                          onPressed: () {},
                           child: const Text(
                             "PURCHASE",
                             style: TextStyle(fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
@@ -183,7 +182,6 @@ class _StoreScreenState extends State<StoreScreen> {
     );
   }
 
-  // বাম দিকের মেনু বাটন বানানোর ছোট ফাংশন
   Widget _buildMenuButton(String title, bool isSelected) {
     return Container(
       width: double.infinity,
