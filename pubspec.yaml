@@ -29,4 +29,6 @@ flutter:
     - assets/models/char1.glb
     - assets/models/char2.glb
     - assets/models/char3.glb
+    - assets/models/sword.glb   # 👈 নতুন
+    - assets/models/phoenix.glb # 👈 নতুন
     
