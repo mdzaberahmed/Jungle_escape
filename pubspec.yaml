@@ -22,11 +22,17 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   
-  # 📦 তোমার সব থ্রিডি মডেলগুলো এখানে রেজিস্টার করা হলো
+  # 📦 তোমার সব থ্রিডি মডেল এবং ছবিগুলো এখানে রেজিস্টার করা হলো
   assets:
     - assets/models/player.glb
     - assets/models/map.glb
     - assets/models/char1.glb
     - assets/models/char2.glb
     - assets/models/char3.glb
-    
+    - assets/models/sword.glb
+    - assets/models/phoenix_bird.glb
+    - assets/images/Warrior Alpha.png
+    - assets/images/Shadow Hunter.png
+    - assets/images/lobby_bg.png
+    - assets/images/Gojo Style.png
+    - assets/images/Cyber Ninja.png
